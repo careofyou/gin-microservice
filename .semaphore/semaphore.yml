@@ -5,10 +5,10 @@ agent:
     type: e1-standard-2
     os_image: ubuntu2004
 blocks:
-  - name: Test
+  - name: install dependensis
     task:
       jobs:
-        - name: install dependensis
+        - name: install
           commands:
             - export GO111MODULE=on
             - export GOPATH=~/go
@@ -17,3 +17,23 @@ blocks:
             - cache restore
             - go mod vendor
             - cache store
+  - name: Test
+    task:
+      jobs:
+        - name: Unit tests
+          commands:
+            - go test ./...
+            - sem-version go 1.22.3
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - cache restore
+            - go mod vendor
+  - name: Build
+    task:
+      jobs:
+        - name: Build
+          commands:
+            - go build -v -o go-gin-app
+            - artifact push project --force go-gin-app
