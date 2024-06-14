@@ -34,7 +34,7 @@ blocks:
       jobs:
         - name: Build
           commands:
-            - go mod init
+            - go mod init github.com/careofyou/gin-microservice
             - go tidy
             - go build -v -o go-gin-app
             - artifact push project --force go-gin-app
