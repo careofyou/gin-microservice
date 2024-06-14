@@ -10,6 +10,7 @@ blocks:
       jobs:
         - name: install
           commands:
+            - sem-version go 1.22.3
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
@@ -22,19 +23,29 @@ blocks:
       jobs:
         - name: Unit tests
           commands:
-            - sem-version go 1.22.3
-            - export GO111MODULE=on
-            - export GOPATH=~/go
-            - 'export PATH=/home/semaphore/go/bin:$PATH'
-            - checkout
-            - cache restore
-            - go mod vendor
+            - go test ./...
+      prologue:
+        commands:
+          - sem-version go 1.22.3
+          - export GO111MODULE=on
+          - export GOPATH=~/go
+          - 'export PATH=/home/semaphore/go/bin:$PATH'
+          - checkout
+          - cache restore
+          - go mod vendor
   - name: Build
     task:
       jobs:
         - name: Build
           commands:
-            - go mod init github.com/careofyou/gin-microservice
-            - go tidy
             - go build -v -o go-gin-app
             - artifact push project --force go-gin-app
+      prologue:
+        commands:
+          - sem-version go 1.22.3
+          - export GO111MODULE=on
+          - export GOPATH=~/go
+          - 'export PATH=/home/semaphore/go/bin:$PATH'
+          - checkout
+          - cache restore
+          - go mod vendor
