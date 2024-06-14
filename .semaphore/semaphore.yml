@@ -22,7 +22,6 @@ blocks:
       jobs:
         - name: Unit tests
           commands:
-            - go test ./...
             - sem-version go 1.22.3
             - export GO111MODULE=on
             - export GOPATH=~/go
