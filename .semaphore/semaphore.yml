@@ -34,5 +34,6 @@ blocks:
       jobs:
         - name: Build
           commands:
+            - go env -w GO111MODULE=off
             - go build -v -o go-gin-app
             - artifact push project --force go-gin-app
